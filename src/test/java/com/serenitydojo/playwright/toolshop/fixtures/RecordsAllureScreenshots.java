@@ -8,8 +8,8 @@ import java.io.ByteArrayInputStream;
 
 public interface RecordsAllureScreenshots {
     @AfterEach
-    default void tearDown(Page page) {
-        recordScreenshot(page,"End of Test Screenshot");
+    default void tearDown() {
+        recordScreenshot(((BaseTest) this).page, "End of Test Screenshot");
     }
 
     default void recordScreenshot(Page page, String screenshotName) {

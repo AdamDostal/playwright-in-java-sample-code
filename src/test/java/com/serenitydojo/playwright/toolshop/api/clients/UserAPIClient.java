@@ -19,7 +19,8 @@ public class UserAPIClient {
                 RequestOptions.create()
                         .setData(user)
                         .setHeader("Content-Type", "application/json")
-                        .setHeader("Accept", "application/json"));
+                        .setHeader("Accept", "application/json")
+                        .setIgnoreHTTPSErrors(true));
         if (response.status() != 201) {
             throw new IllegalStateException("Could not create user: " + response.text());
         }

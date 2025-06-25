@@ -11,9 +11,9 @@ import java.nio.file.Paths;
 public interface TracingManager {
 
     @BeforeEach
-    default void setupTrace(BrowserContext context) {
-        context.tracing().start(
-                new Tracing.StartOptions()
+    default void setupTrace() {
+        ((BaseTest) this).browserContext.tracing().start(
+                new com.microsoft.playwright.Tracing.StartOptions()
                         .setScreenshots(true)
                         .setSnapshots(true)
                         .setSources(true)
@@ -21,11 +21,11 @@ public interface TracingManager {
     }
 
     @AfterEach
-    default void recordTrace(TestInfo testInfo, BrowserContext context) {
+    default void recordTrace(TestInfo testInfo) {
         String traceName = testInfo.getDisplayName().replace(" ","-").toLowerCase();
-        context.tracing().stop(
-                new Tracing.StopOptions()
-                        .setPath(Paths.get("target/traces/trace-" + traceName + ".zip"))
+        ((BaseTest) this).browserContext.tracing().stop(
+                new com.microsoft.playwright.Tracing.StopOptions()
+                        .setPath(java.nio.file.Paths.get("target/traces/trace-" + traceName + ".zip"))
         );
     }
 

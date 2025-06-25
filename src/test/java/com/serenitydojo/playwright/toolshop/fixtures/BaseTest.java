@@ -1,37 +1,28 @@
 package com.serenitydojo.playwright.toolshop.fixtures;
 
-import com.microsoft.playwright.*;
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+import com.serenitydojo.playwright.toolshop.utils.BrowserFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.Arrays;
-
 public abstract class BaseTest {
 
-    protected static ThreadLocal<Playwright> playwright
-            = ThreadLocal.withInitial(() -> {
-                Playwright playwright = Playwright.create();
-                playwright.selectors().setTestIdAttribute("data-test");
-                return playwright;
-            }
-    );
+    protected static ThreadLocal<Playwright> playwright = ThreadLocal.withInitial(Playwright::create);
 
     protected static ThreadLocal<Browser> browser = ThreadLocal.withInitial(() ->
-        playwright.get().chromium().launch(
-                new BrowserType.LaunchOptions()
-                        .setHeadless(true)
-                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
-        )
+            BrowserFactory.createBrowser(playwright.get())
     );
 
     protected BrowserContext browserContext;
-
     protected Page page;
 
     @BeforeEach
     void setUpBrowserContext() {
-        browserContext = browser.get().newContext();
+        browserContext = BrowserFactory.createBrowserContext(browser.get());
         page = browserContext.newPage();
     }
 
@@ -44,7 +35,6 @@ public abstract class BaseTest {
     static void tearDown() {
         browser.get().close();
         browser.remove();
-
         playwright.get().close();
         playwright.remove();
     }

@@ -1,10 +1,14 @@
 package com.serenitydojo.playwright.toolshop.utils;
 
+import com.serenitydojo.playwright.toolshop.enums.BrowserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -39,62 +43,68 @@ public class ConfigManager {
         }
     }
 
-    public static String getBaseUrl() {
-        return getProperty("base.url", "https://practicesoftwaretesting.com");
-    }
-
-    public static String getApiBaseUrl() {
-        return getProperty("api.base.url", getBaseUrl() + "/api");
-    }
-
-    public static String getLoginUrl() {
-        return getProperty("login.url", getBaseUrl() + "/auth/login");
-    }
-
-    public static String getRegisterUrl() {
-        return getProperty("register.url", getBaseUrl() + "/auth/register");
-    }
-
-    public static String getContactUrl() {
-        return getProperty("contact.url", getBaseUrl() + "/contact");
-    }
-
-    public static String getProductsUrl() {
-        return getProperty("products.url", getBaseUrl() + "/products");
-    }
-
-    public static String getCartUrl() {
-        return getProperty("cart.url", getBaseUrl() + "/checkout");
-    }
-
-    public static String getApiUsersUrl() {
-        return getProperty("api.users.url", getApiBaseUrl() + "/users");
-    }
-
-    public static String getApiProductsUrl() {
-        return getProperty("api.products.url", getApiBaseUrl() + "/products");
-    }
-
-    public static String getApiLoginUrl() {
-        return getProperty("api.login.url", getApiBaseUrl() + "/users/login");
+    // Browser Configuration Methods
+    public static BrowserType getBrowserType() {
+        String browserName = getProperty("browser.type", "chrome");
+        logger.info("Browser type configured: {}", browserName);
+        return BrowserType.fromString(browserName);
     }
 
     public static boolean isBrowserHeadless() {
-        return Boolean.parseBoolean(getProperty("browser.headless", "false"));
+        boolean headless = Boolean.parseBoolean(getProperty("browser.headless", "false"));
+        logger.info("Browser headless mode: {}", headless);
+        return headless;
     }
 
     public static int getBrowserTimeout() {
-        return Integer.parseInt(getProperty("browser.timeout", "30000"));
+        int timeout = Integer.parseInt(getProperty("browser.timeout", "30000"));
+        logger.info("Browser timeout: {}ms", timeout);
+        return timeout;
     }
 
+    public static int getViewportWidth() {
+        return Integer.parseInt(getProperty("browser.viewport.width", "1920"));
+    }
+
+    public static int getViewportHeight() {
+        return Integer.parseInt(getProperty("browser.viewport.height", "1080"));
+    }
+
+    public static List<String> getBrowserArgs() {
+        String args = getProperty("browser.args", "");
+        if (args.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(args.split("\\s*,\\s*"));
+    }
+
+    // Test Configuration Methods
     public static boolean isScreenshotOnFailure() {
         return Boolean.parseBoolean(getProperty("screenshot.on.failure", "true"));
+    }
+
+    public static boolean isScreenshotOnSuccess() {
+        return Boolean.parseBoolean(getProperty("screenshot.on.success", "false"));
+    }
+
+    public static int getTestRetryCount() {
+        return Integer.parseInt(getProperty("test.retry.count", "1"));
+    }
+
+    // Logging Configuration Methods
+    public static String getLogLevel() {
+        return getProperty("log.level", "INFO");
+    }
+
+    public static boolean isLogBrowserConsole() {
+        return Boolean.parseBoolean(getProperty("log.browser.console", "true"));
     }
 
     private static String getProperty(String key, String defaultValue) {
         // Check system properties first (allows runtime override)
         String systemProperty = System.getProperty(key);
         if (systemProperty != null) {
+            logger.debug("Using system property for {}: {}", key, systemProperty);
             return systemProperty;
         }
 

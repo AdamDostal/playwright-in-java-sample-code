@@ -95,6 +95,10 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
+                    <systemPropertyVariables>
+                        <SUT_URL>${sutUrl}</SUT_URL>
+                        <SUT_API_URL>${sutApiUrl}</SUT_API_URL>
+                    </systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
@@ -128,4 +132,24 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <sutUrl>https://practicesoftwaretesting.com</sutUrl>
+                <sutApiUrl>https://api.practicesoftwaretesting.com</sutApiUrl>
+            </properties>
+        </profile>
+        <profile>
+            <id>preprod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sutUrl>https://practicesoftwaretesting.com</sutUrl>
+                <sutApiUrl>https://api.practicesoftwaretesting.com</sutApiUrl>
+            </properties>
+        </profile>
+    </profiles>
 </project>

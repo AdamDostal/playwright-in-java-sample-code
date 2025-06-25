@@ -1,13 +1,11 @@
 package com.serenitydojo.playwright.toolshop.tests.catalog;
 
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.junit.UsePlaywright;
-import com.serenitydojo.playwright.toolshop.pages.catalog.ProductList;
-import com.serenitydojo.playwright.toolshop.pages.catalog.SearchComponent;
-import com.serenitydojo.playwright.toolshop.fixtures.ChromeHeadlessOptions;
+import com.serenitydojo.playwright.toolshop.constants.UrlPaths;
+import com.serenitydojo.playwright.toolshop.fixtures.BaseTest;
 import com.serenitydojo.playwright.toolshop.fixtures.TakesFinalScreenshot;
 import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
-import com.serenitydojo.playwright.toolshop.utils.ConfigManager;
+import com.serenitydojo.playwright.toolshop.pages.catalog.ProductList;
+import com.serenitydojo.playwright.toolshop.pages.catalog.SearchComponent;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
@@ -18,12 +16,11 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("Searching for products")
 @Feature("Product Catalog")
-@UsePlaywright(ChromeHeadlessOptions.class)
-public class SearchForProductsTest implements TakesFinalScreenshot, TracingManager {
+public class SearchForProductsTest extends BaseTest implements TakesFinalScreenshot, TracingManager {
 
     @BeforeEach
-    void openHomePage(Page page) {
-        page.navigate(ConfigManager.getBaseUrl());
+    void openHomePage() {
+        page.navigate(UrlPaths.SUT_URL);
     }
 
     @Nested
@@ -33,7 +30,7 @@ public class SearchForProductsTest implements TakesFinalScreenshot, TracingManag
 
         @Test
         @DisplayName("When there are matching results")
-        void whenSearchingByKeyword(Page page) {
+        void whenSearchingByKeyword() {
             SearchComponent searchComponent = new SearchComponent(page);
             ProductList productList = new ProductList(page);
 
@@ -46,7 +43,7 @@ public class SearchForProductsTest implements TakesFinalScreenshot, TracingManag
 
         @Test
         @DisplayName("When there are no matching results")
-        void whenThereIsNoMatchingProduct(Page page) {
+        void whenThereIsNoMatchingProduct() {
             SearchComponent searchComponent = new SearchComponent(page);
             ProductList productList = new ProductList(page);
             searchComponent.searchBy("unknown");
@@ -59,7 +56,7 @@ public class SearchForProductsTest implements TakesFinalScreenshot, TracingManag
 
         @Test
         @DisplayName("When the user clears a previous search results")
-        void clearingTheSearchResults(Page page) {
+        void clearingTheSearchResults() {
             SearchComponent searchComponent = new SearchComponent(page);
             ProductList productList = new ProductList(page);
             searchComponent.searchBy("saw");
