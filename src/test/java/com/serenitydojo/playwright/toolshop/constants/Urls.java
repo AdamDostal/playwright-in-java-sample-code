@@ -4,7 +4,7 @@ package com.serenitydojo.playwright.toolshop.constants;
  * URL path constants for the application
  * Base URLs come from Maven profiles, paths are defined here
  */
-public final class UrlPaths {
+public final class Urls {
 
     public static final String SUT_URL = System.getProperty("SUT_URL");
     public static final String LOGIN_PATH = SUT_URL + "/auth/login";

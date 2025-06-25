@@ -1,6 +1,6 @@
 package com.serenitydojo.playwright.toolshop.tests.catalog;
 
-import com.serenitydojo.playwright.toolshop.constants.UrlPaths;
+import com.serenitydojo.playwright.toolshop.constants.Urls;
 import com.serenitydojo.playwright.toolshop.fixtures.BaseTest;
 import com.serenitydojo.playwright.toolshop.fixtures.TakesFinalScreenshot;
 import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
@@ -20,7 +20,7 @@ public class SearchForProductsTest extends BaseTest implements TakesFinalScreens
 
     @BeforeEach
     void openHomePage() {
-        page.navigate(UrlPaths.SUT_URL);
+        page.navigate(Urls.SUT_URL);
     }
 
     @Nested

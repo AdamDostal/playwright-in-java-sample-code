@@ -16,7 +16,7 @@ public class Authentication {
     }
 
     public User registerUserCalled(String firstName) {
-        User someUser = User.randomUserNamed(firstName);
+        User someUser = User.randomUser().withFirstName(firstName);
         userAPI.registerUser(someUser);
         return someUser;
     }

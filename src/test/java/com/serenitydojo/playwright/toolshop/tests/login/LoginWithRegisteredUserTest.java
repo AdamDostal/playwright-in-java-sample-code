@@ -15,7 +15,7 @@ public class LoginWithRegisteredUserTest extends BaseTest {
     @DisplayName("Should be able to login with a registered user")
     void should_login_with_registered_user() {
         // Register a user via the API
-        User user = User.randomUserNamed("Reg");
+        User user = User.randomUser().withFirstName("Reg");;
         UserAPIClient userAPIClient = new UserAPIClient(page);
         userAPIClient.registerUser(user);
 
@@ -31,7 +31,7 @@ public class LoginWithRegisteredUserTest extends BaseTest {
     @Test
     @DisplayName("Should reject a user if they provide a wrong password")
     void should_reject_user_with_invalid_password() {
-        User user = User.randomUserNamed("Reg");
+        User user = User.randomUser().withFirstName("Reg");
         UserAPIClient userAPIClient = new UserAPIClient(page);
         userAPIClient.registerUser(user);
 
