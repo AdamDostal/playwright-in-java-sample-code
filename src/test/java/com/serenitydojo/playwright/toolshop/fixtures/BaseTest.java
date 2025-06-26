@@ -4,7 +4,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
-import com.serenitydojo.playwright.toolshop.utils.BrowserFactory;
+import com.serenitydojo.playwright.toolshop.config.BrowserFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +28,7 @@ public abstract class BaseTest {
 
     @AfterEach
     void closeContext() {
+        ScreenshotManager.takeScreenshot(page, "After test");
         browserContext.close();
     }
 

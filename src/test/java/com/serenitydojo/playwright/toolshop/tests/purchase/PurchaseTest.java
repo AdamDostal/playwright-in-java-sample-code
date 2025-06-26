@@ -1,13 +1,11 @@
 package com.serenitydojo.playwright.toolshop.tests.purchase;
 
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.junit.UsePlaywright;
+import com.serenitydojo.playwright.toolshop.fixtures.BaseTest;
 import com.serenitydojo.playwright.toolshop.pages.catalog.*;
 import com.serenitydojo.playwright.toolshop.pages.catalog.workflow.Authentication;
 import com.serenitydojo.playwright.toolshop.pages.catalog.workflow.Purchase;
 import com.serenitydojo.playwright.toolshop.api.models.User;
-import com.serenitydojo.playwright.toolshop.fixtures.ChromeHeadlessOptions;
-import com.serenitydojo.playwright.toolshop.fixtures.TakesFinalScreenshot;
+import com.serenitydojo.playwright.toolshop.fixtures.FinalScreenshot;
 import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
 import com.serenitydojo.playwright.toolshop.pages.common.NavBar;
 import io.qameta.allure.Feature;
@@ -20,8 +18,7 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("Purchase")
 @Feature("Purchase")
-@UsePlaywright(ChromeHeadlessOptions.class)
-public class PurchaseTest implements TakesFinalScreenshot, TracingManager {
+public class PurchaseTest extends BaseTest implements TracingManager {
 
     SearchComponent searchComponent;
     ProductList productList;
@@ -38,7 +35,7 @@ public class PurchaseTest implements TakesFinalScreenshot, TracingManager {
     }
 
     @BeforeEach
-    void setUp(Page page) {
+    void setUp() {
         searchComponent = new SearchComponent(page);
         productList = new ProductList(page);
         productDetails = new ProductDetails(page);

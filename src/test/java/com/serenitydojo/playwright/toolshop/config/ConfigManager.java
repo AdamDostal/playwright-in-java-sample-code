@@ -1,4 +1,4 @@
-package com.serenitydojo.playwright.toolshop.utils;
+package com.serenitydojo.playwright.toolshop.config;
 
 import com.serenitydojo.playwright.toolshop.enums.BrowserType;
 import org.slf4j.Logger;

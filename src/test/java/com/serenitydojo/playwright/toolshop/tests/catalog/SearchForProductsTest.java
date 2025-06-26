@@ -2,7 +2,7 @@ package com.serenitydojo.playwright.toolshop.tests.catalog;
 
 import com.serenitydojo.playwright.toolshop.constants.Urls;
 import com.serenitydojo.playwright.toolshop.fixtures.BaseTest;
-import com.serenitydojo.playwright.toolshop.fixtures.TakesFinalScreenshot;
+import com.serenitydojo.playwright.toolshop.fixtures.FinalScreenshot;
 import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
 import com.serenitydojo.playwright.toolshop.pages.catalog.ProductList;
 import com.serenitydojo.playwright.toolshop.pages.catalog.SearchComponent;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("Searching for products")
 @Feature("Product Catalog")
-public class SearchForProductsTest extends BaseTest implements TakesFinalScreenshot, TracingManager {
+public class SearchForProductsTest extends BaseTest implements TracingManager {
 
     @BeforeEach
     void openHomePage() {

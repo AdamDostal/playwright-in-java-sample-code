@@ -1,12 +1,10 @@
 package com.serenitydojo.playwright.toolshop.tests.contact;
 
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.junit.UsePlaywright;
+import com.serenitydojo.playwright.toolshop.fixtures.BaseTest;
+import com.serenitydojo.playwright.toolshop.fixtures.FinalScreenshot;
+import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
 import com.serenitydojo.playwright.toolshop.pages.common.NavBar;
 import com.serenitydojo.playwright.toolshop.pages.contact.ContactForm;
-import com.serenitydojo.playwright.toolshop.fixtures.ChromeHeadlessOptions;
-import com.serenitydojo.playwright.toolshop.fixtures.TakesFinalScreenshot;
-import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,14 +21,13 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 @DisplayName("Contact form")
 @Feature("Contacts")
-@UsePlaywright(ChromeHeadlessOptions.class)
-public class ContactFormTest implements TakesFinalScreenshot, TracingManager {
+public class ContactFormTest extends BaseTest implements TracingManager {
 
     ContactForm contactForm;
     NavBar navigate;
 
     @BeforeEach
-    void openContactPage(Page page) {
+    void openContactPage() {
         contactForm = new ContactForm(page);
         navigate = new NavBar(page);
         navigate.toTheContactPage();
@@ -39,7 +36,7 @@ public class ContactFormTest implements TakesFinalScreenshot, TracingManager {
     @Story("Contact form")
     @DisplayName("Customers can use the contact form to contact us")
     @Test
-    void completeForm(Page page) throws URISyntaxException {
+    void completeForm() throws URISyntaxException {
         contactForm.setFirstName("Sarah-Jane");
         contactForm.setLastName("Smith");
         contactForm.setEmail("sarah@example.com");
@@ -59,7 +56,7 @@ public class ContactFormTest implements TakesFinalScreenshot, TracingManager {
     @DisplayName("First name, last name, email and message are mandatory")
     @ParameterizedTest(name = "{arguments} is a mandatory field")
     @ValueSource(strings = {"First name", "Last name", "Email", "Message"})
-    void mandatoryFields(String fieldName, Page page) {
+    void mandatoryFields(String fieldName) {
         // Fill in the field values
         contactForm.setFirstName("Sarah-Jane");
         contactForm.setLastName("Smith");
@@ -80,7 +77,7 @@ public class ContactFormTest implements TakesFinalScreenshot, TracingManager {
     @Story("Contact form")
     @DisplayName("The message must be at least 50 characters long")
     @Test
-    void messageTooShort(Page page) {
+    void messageTooShort() {
 
         contactForm.setFirstName("Sarah-Jane");
         contactForm.setLastName("Smith");
@@ -98,7 +95,7 @@ public class ContactFormTest implements TakesFinalScreenshot, TracingManager {
     @DisplayName("The email address must be correctly formatted")
     @ParameterizedTest(name = "'{arguments}' should be rejected")
     @ValueSource(strings = {"not-an-email", "not-an.email.com", "notanemail"})
-    void invalidEmailField(String invalidEmail, Page page) {
+    void invalidEmailField(String invalidEmail) {
         contactForm.setFirstName("Sarah-Jane");
         contactForm.setLastName("Smith");
         contactForm.setEmail(invalidEmail);

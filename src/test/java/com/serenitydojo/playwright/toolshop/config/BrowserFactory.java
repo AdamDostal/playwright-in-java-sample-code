@@ -1,4 +1,4 @@
-package com.serenitydojo.playwright.toolshop.utils;
+package com.serenitydojo.playwright.toolshop.config;
 
 import com.microsoft.playwright.*;
 import com.serenitydojo.playwright.toolshop.enums.BrowserType;
@@ -69,7 +69,8 @@ public class BrowserFactory {
      * @return BrowserContext instance
      */
     public static BrowserContext createBrowserContext(Browser browser) {
-        Browser.NewContextOptions contextOptions = new Browser.NewContextOptions();
+        Browser.NewContextOptions contextOptions = new Browser.NewContextOptions()
+                .setTestIdAttribute("data-test");
         BrowserContext context = browser.newContext(contextOptions);
 
         logger.debug("Browser context created successfully");

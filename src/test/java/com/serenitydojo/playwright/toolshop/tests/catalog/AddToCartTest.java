@@ -2,8 +2,9 @@ package com.serenitydojo.playwright.toolshop.tests.catalog;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.junit.UsePlaywright;
+import com.serenitydojo.playwright.toolshop.fixtures.BaseTest;
 import com.serenitydojo.playwright.toolshop.fixtures.ChromeHeadlessOptions;
-import com.serenitydojo.playwright.toolshop.fixtures.TakesFinalScreenshot;
+import com.serenitydojo.playwright.toolshop.fixtures.FinalScreenshot;
 import com.serenitydojo.playwright.toolshop.fixtures.TracingManager;
 import com.serenitydojo.playwright.toolshop.pages.catalog.*;
 import com.serenitydojo.playwright.toolshop.pages.common.NavBar;
@@ -18,8 +19,7 @@ import java.util.List;
 
 @DisplayName("Shopping Cart")
 @Feature("Shopping Cart")
-@UsePlaywright(ChromeHeadlessOptions.class)
-public class AddToCartTest implements TakesFinalScreenshot, TracingManager {
+public class AddToCartTest extends BaseTest implements TracingManager {
 
     SearchComponent searchComponent;
     ProductList productList;
@@ -33,7 +33,7 @@ public class AddToCartTest implements TakesFinalScreenshot, TracingManager {
     }
 
     @BeforeEach
-    void setUp(Page page) {
+    void setUp() {
         searchComponent = new SearchComponent(page);
         productList = new ProductList(page);
         productDetails = new ProductDetails(page);
