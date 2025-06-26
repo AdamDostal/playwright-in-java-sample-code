@@ -7,12 +7,8 @@ import com.microsoft.playwright.Playwright;
 import framework.config.BrowserFactory;
 import framework.config.ConfigManager;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class BaseTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
     protected static ThreadLocal<Playwright> playwright = ThreadLocal.withInitial(Playwright::create);
 
@@ -25,6 +21,7 @@ public abstract class BaseTest {
 
     @BeforeAll
     static void globalSetup() {
+        ConfigManager.logTestConfiguration();
         playwright.get().selectors().setTestIdAttribute("data-test");
     }
 
@@ -32,6 +29,7 @@ public abstract class BaseTest {
     void setUpBrowserContext() {
         browserContext = BrowserFactory.createBrowserContext(browser.get());
         page = browserContext.newPage();
+
         if (ConfigManager.isTracingEnabled()) {
             TracingManager.startTracing(browserContext);
         }
@@ -44,7 +42,7 @@ public abstract class BaseTest {
         }
 
         if (ConfigManager.isScreenshotEnabled()) {
-            ScreenshotManager.takeScreenshot(page, "End of Test");
+            ScreenshotManager.takeScreenshot(page, "Test completed");
         }
 
         browserContext.close();

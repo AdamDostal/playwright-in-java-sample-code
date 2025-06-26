@@ -4,22 +4,25 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import framework.api.models.User;
 
-public class LoginPage {
+import static framework.constants.Endpoints.API_USER_LOGIN;
+import static framework.constants.Endpoints.UI_LOGIN_PATH;
+
+public class Login {
     private final Page page;
 
-    public LoginPage(Page page) {
+    public Login(Page page) {
         this.page = page;
     }
 
     public void open() {
-        page.navigate("https://practicesoftwaretesting.com/auth/login");
+        page.navigate(UI_LOGIN_PATH);
     }
 
     public void loginAs(User user) {
         page.getByPlaceholder("Your email").fill(user.email());
         page.getByPlaceholder("Your password").fill(user.password());
 
-        page.waitForResponse("**/users/login**", () -> {
+        page.waitForResponse("**" + API_USER_LOGIN + "**", () -> {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login")).click();
         });
     }

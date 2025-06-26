@@ -3,16 +3,16 @@ package framework.pages.catalog.workflow;
 import com.microsoft.playwright.Page;
 import framework.api.clients.UserAPIClient;
 import framework.api.models.User;
-import framework.pages.login.LoginPage;
+import framework.pages.login.Login;
 
 public class Authentication {
 
     private final UserAPIClient userAPI;
-    private final LoginPage loginPage;
+    private final Login login;
 
     public Authentication(Page page) {
         this.userAPI = new UserAPIClient(page);
-        this.loginPage = new LoginPage(page);
+        this.login = new Login(page);
     }
 
     public User registerUserCalled(String firstName) {
@@ -22,7 +22,7 @@ public class Authentication {
     }
 
     public void loginAs(User user) {
-        loginPage.open();
-        loginPage.loginAs(user);
+        login.open();
+        login.loginAs(user);
     }
 }

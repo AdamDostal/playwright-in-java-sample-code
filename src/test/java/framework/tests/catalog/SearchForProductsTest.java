@@ -1,6 +1,6 @@
 package framework.tests.catalog;
 
-import framework.constants.Urls;
+import framework.constants.Endpoints;
 import framework.fixtures.BaseTest;
 import framework.pages.catalog.ProductList;
 import framework.pages.catalog.SearchComponent;
@@ -18,7 +18,7 @@ public class SearchForProductsTest extends BaseTest {
 
     @BeforeEach
     void openHomePage() {
-        page.navigate(Urls.SUT_URL);
+        page.navigate(Endpoints.UI_SUT_URL);
     }
 
     @Nested

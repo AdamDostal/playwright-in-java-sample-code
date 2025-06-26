@@ -3,7 +3,7 @@ package framework.tests.login;
 import framework.api.clients.UserAPIClient;
 import framework.api.models.User;
 import framework.fixtures.BaseTest;
-import framework.pages.login.LoginPage;
+import framework.pages.login.Login;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +21,12 @@ public class LoginRegisteredUserTest extends BaseTest {
         userAPIClient.registerUser(user);
 
         // Login via the login page
-        LoginPage loginPage = new LoginPage(page);
-        loginPage.open();
-        loginPage.loginAs(user);
+        Login login = new Login(page);
+        login.open();
+        login.loginAs(user);
 
         // Check that we are on the right account page
-        assertThat(loginPage.title()).isEqualTo("My account");
+        assertThat(login.title()).isEqualTo("My account");
     }
 
     @Test
@@ -36,10 +36,10 @@ public class LoginRegisteredUserTest extends BaseTest {
         UserAPIClient userAPIClient = new UserAPIClient(page);
         userAPIClient.registerUser(user);
 
-        LoginPage loginPage = new LoginPage(page);
-        loginPage.open();
-        loginPage.loginAs(user.withPassword("wrong-password"));
+        Login login = new Login(page);
+        login.open();
+        login.loginAs(user.withPassword("wrong-password"));
 
-        assertThat(loginPage.loginErrorMessage()).isEqualTo("Invalid email or password");
+        assertThat(login.loginErrorMessage()).isEqualTo("Invalid email or password");
     }
 }

@@ -3,6 +3,9 @@ package framework.pages.common;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
+import static framework.constants.Endpoints.UI_CONTACT_PATH;
+import static framework.constants.Endpoints.UI_SUT_URL;
+
 public class NavBar {
     private final Page page;
 
@@ -17,11 +20,11 @@ public class NavBar {
 
     @Step("Open the home page")
     public void openHomePage() {
-        page.navigate("https://practicesoftwaretesting.com");
+        page.navigate(UI_SUT_URL);
     }
 
     @Step("Open the Contact page")
     public void toTheContactPage() {
-        page.navigate("https://practicesoftwaretesting.com/contact");
+        page.navigate(UI_CONTACT_PATH);
     }
 }

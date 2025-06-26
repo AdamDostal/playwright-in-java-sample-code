@@ -10,15 +10,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Configuration manager to load and provide access to test properties
- * Only includes methods for properties actually defined in test.properties
- */
 public class ConfigManager {
     private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
     private static final Properties properties = new Properties();
     private static final String DEFAULT_PROPERTIES_FILE = "test.properties";
+    private static final AtomicBoolean configurationLogged = new AtomicBoolean(false);
 
     static {
         loadProperties();
@@ -42,35 +40,42 @@ public class ConfigManager {
         }
     }
 
-    // Browser Configuration Methods - only for properties that exist in test.properties
+    /**
+     * Log the complete test configuration setup - only once across all test classes
+     */
+    public static void logTestConfiguration() {
+        // Use AtomicBoolean to ensure this runs only once even in parallel execution
+        if (configurationLogged.compareAndSet(false, true)) {
+            logger.info("=== Test Configuration Setup ===");
+            logger.info("Browser Type: {}", getBrowserType());
+            logger.info("Headless Mode: {}", isBrowserHeadless());
+            logger.info("Page Timeout: {}ms", getPageTimeout());
+            logger.info("Slow Motion: {}ms", getBrowserSlowMotion());
+            logger.info("Browser Args: {}", getBrowserArgs().isEmpty() ? "none" : getBrowserArgs());
+            logger.info("Tracing Enabled: {}", isTracingEnabled());
+            logger.info("Screenshots Enabled: {}", isScreenshotEnabled());
+            logger.info("================================");
+        }
+    }
+
     public static BrowserType getBrowserType() {
         String browserName = getProperty("browser.type", "chrome");
-        logger.info("Browser: {}", browserName);
         return BrowserType.fromString(browserName);
     }
 
     public static boolean isBrowserHeadless() {
-        boolean headless = Boolean.parseBoolean(getProperty("browser.headless", "false"));
-        logger.info("Browser headless mode: {}", headless);
-        return headless;
+        return Boolean.parseBoolean(getProperty("browser.headless", "false"));
     }
 
-    public static int getBrowserTimeout() {
-        int timeout = Integer.parseInt(getProperty("browser.timeout", "30000"));
-        logger.info("Browser timeout: {}ms", timeout);
-        return timeout;
+    /**
+     * Get page action timeout (clicks, waits, etc.)
+     */
+    public static int getPageTimeout() {
+        return Integer.parseInt(getProperty("browser.page.timeout", "30000"));
     }
 
     public static int getBrowserSlowMotion() {
-        int slowMotion = Integer.parseInt(getProperty("browser.slow.motion", "0"));
-        logger.info("Browser slow motion: {}ms", slowMotion);
-        return slowMotion;
-    }
-
-    public static boolean isBrowserVideoEnabled() {
-        boolean video = Boolean.parseBoolean(getProperty("browser.video", "false"));
-        logger.info("Browser video recording: {}", video);
-        return video;
+        return Integer.parseInt(getProperty("browser.slow.motion", "0"));
     }
 
     public static List<String> getBrowserArgs() {
@@ -81,29 +86,20 @@ public class ConfigManager {
         return Arrays.asList(args.split("\\s*,\\s*"));
     }
 
-    // Tracing Configuration Methods - only for properties that exist
     public static boolean isTracingEnabled() {
-        boolean enabled = Boolean.parseBoolean(getProperty("playwright.tracing.enabled", "false"));
-        logger.info("Playwright tracing enabled: {}", enabled);
-        return enabled;
+        return Boolean.parseBoolean(getProperty("tracing.enabled", "false"));
     }
 
-    // Screenshot Configuration Methods - only for properties that exist
     public static boolean isScreenshotEnabled() {
-        boolean enabled = Boolean.parseBoolean(getProperty("screenshot.enabled", "true"));
-        logger.info("Screenshots enabled: {}", enabled);
-        return enabled;
+        return Boolean.parseBoolean(getProperty("screenshot.enabled", "true"));
     }
 
     private static String getProperty(String key, String defaultValue) {
-        // Check system properties first (allows runtime override)
         String systemProperty = System.getProperty(key);
         if (systemProperty != null) {
-            logger.debug("Using system property for {}: {}", key, systemProperty);
             return systemProperty;
         }
 
-        // Then check loaded properties file
         return properties.getProperty(key, defaultValue);
     }
 }
